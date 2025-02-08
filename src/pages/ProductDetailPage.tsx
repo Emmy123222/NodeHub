@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Monitor, ArrowLeft, ShoppingCart, Cpu, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
@@ -7,9 +7,11 @@ import phone from "../assets/Phone.png";
 import hand from "../assets/hand.png";
 import Truck from "../assets/Truck.png";
 import { useNavigate } from "react-router-dom";
+import PCBuilder from "./PCBuilder";
 
 function ProductDetailPage() {
   const navigate = useNavigate();
+  const [isCustomize, setIsCustomize] = useState(false);
   const { id } = useParams<{ id: string }>();
 
   return (
@@ -39,7 +41,7 @@ function ProductDetailPage() {
               </button>
               <button
                 className="flex items-center gap-2 border border-cyan-500 text-black px-4 py-2 rounded-full hover:bg-cyan-500 transition"
-                onClick={() => navigate("/pcbuilder")}
+                onClick={() => setIsCustomize(!isCustomize)}
               >
                 Customize <Sparkles size={16} />
               </button>
@@ -48,7 +50,8 @@ function ProductDetailPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-1 gap-12">
+      {isCustomize? 
+      <div className=""><PCBuilder/></div> :<div className="grid grid-cols-1 lg:grid-cols-1 gap-12">
         {/* Product Image */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -163,7 +166,7 @@ function ProductDetailPage() {
             </span>
           </div>
         </div>
-      </div>
+      </div>}
     </div>
   );
 }

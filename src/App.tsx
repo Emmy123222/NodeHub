@@ -8,6 +8,7 @@ import Checkout from "./pages/Checkout";
 import Hard from "./pages/Hard";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import PCBuilder from "./pages/PCBuilder";
+import Cart from "./pages/Cart";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/processor/:type" element={<Hard />} />
           <Route path="/product/:id" element={<ProductDetailPage />} />
           <Route path="/pcbuilder" element={<PCBuilder />} />
+          <Route path="/cart" element={<Cart />} />
         </Routes>
       </Layout>
     </Router>

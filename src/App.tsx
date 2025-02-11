@@ -9,6 +9,8 @@ import Hard from "./pages/Hard";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import PCBuilder from "./pages/PCBuilder";
 import Cart from "./pages/Cart";
+import CryptoPayment from "./pages/CryptoPayment";
+import PayCrypto from "./pages/PayCrypto";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
           <Route path="/product/:id" element={<ProductDetailPage />} />
           <Route path="/pcbuilder" element={<PCBuilder />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/pay/crypto" element={<CryptoPayment />} />
+          <Route path="/pay/crypt" element={<PayCrypto />} />
         </Routes>
       </Layout>
     </Router>

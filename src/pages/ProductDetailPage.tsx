@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import  { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { Monitor, ArrowLeft, ShoppingCart, Cpu, Sparkles } from "lucide-react";
+import { ArrowLeft, ShoppingCart, Cpu, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
-import speaker from "../assets/speaker.png";
+// import speaker from "../assets/speaker.png";
 import phone from "../assets/Phone.png";
 import hand from "../assets/hand.png";
 import Truck from "../assets/Truck.png";
 import { useNavigate } from "react-router-dom";
 import PCBuilder from "./PCBuilder";
+import { fetcher } from "../services/api";
+// import { fetcher } from "../../services/api";
 
 function ProductDetailPage() {
   const navigate = useNavigate();
@@ -18,7 +20,14 @@ function ProductDetailPage() {
 
   const [isCustomize, setIsCustomize] = useState(false);
   const { id } = useParams<{ id: string }>();
+  const [product, setProduct] = useState<any>();
+  useEffect(() => {
+    fetcher(`/products/${id}`).then((data) => {
+      setProduct(data);
+    })
+  }, [id])
 
+  console.log(product)
   return (
     <div className="min-h-screen bg-white ">
       <div className="flex items-center gap-8 p-5">
@@ -33,11 +42,11 @@ function ProductDetailPage() {
         <div className=" gap-4 border-2 border-dashed border-gray-400 p-4 rounded-lg w-full ">
           <div className=" flex items-center gap-4 justify-between">
             <div className="flex-1 text-black text-3xl font-bold">
-              <span>Ryzen B650 MATX</span>
+              <span>{product?.name}</span>
             </div>
 
             <div className="absolute left-1/2 transform -translate-x-1/2 top-3/2 -translate-y-2/2">
-              <span className="text-3xl font-bold text-black">₦900,000</span>
+              <span className="text-3xl font-bold text-black">{product?.price}</span>
             </div>
 
             <div className="flex items-center gap-2">
@@ -70,7 +79,7 @@ function ProductDetailPage() {
             animate={{ opacity: 1, x: 0 }}
             className="relative h-[500px] rounded-xl overflow-hidden flex justify-center"
           >
-            <img src={speaker} alt="Product" className=" flex justify-center" />
+            <img src={product?.image} alt="Product" className=" flex justify-center" />
           </motion.div>
 
           {/* Product Info */}
@@ -81,31 +90,34 @@ function ProductDetailPage() {
           >
             <div className="text-[#0D1B2A] p-7">
               <p className="text-lg mb-4">
-                This mid-tower system is powered by AMD’s Ryzen processors on a
-                micro-ATX motherboard, delivering up to 16 cores for strong
-                performance across various applications. The Fractal Meshify 2
-                Compact case offers USB, audio ports, Ethernet, and WiFi, Intel
-                i7-13700, along with support for high-end GPUs, up to 128GB RAM,
-                and multiple storage options. Efficient cooling and dust filters
-                ensure optimal performance.
+                {product?.details}
               </p>
 
               <p className="text-lg font-semibold">Windows 11 Ready!</p>
 
               <p className="flex items-center text-lg">
                 <span className="mr-2">🚀</span> Best For: Running validator
-                nodes (Ethereum, Solana, Bitcoin)
+                nodes ({product?.supported_blockchains.join(", ")})
               </p>
+              
 
               <p className="flex items-center text-lg">
-                <span className="mr-2">✅</span> Pre-installed Software:
-                DAppNode OS
+                <span className="mr-2">✅</span> Pre-installed Software: {product?.specs?.software}
+              </p>
+              <p className="flex items-center text-lg">
+                <span className="mr-2">✅</span> Best for: {product?.pre_installed_software}
+              </p> <p className="flex items-center text-lg">
+                <span className="mr-2">✅</span> processor: {product?.processor}
+              </p> <p className="flex items-center text-lg">
+                <span className="mr-2">✅</span> ram: {product?.specs?.ram}
+              </p> <p className="flex items-center text-lg">
+                <span className="mr-2">✅</span> storage: {product?.specs?.storage}
               </p>
 
-              <p className="flex items-center text-lg">
+              {/* <p className="flex items-center text-lg">
                 <span className="mr-2">⭐</span> Customer Ratings:{" "}
                 <span className="">★★★★★ (4.9/5 from 23 reviews)</span>
-              </p>
+              </p> */}
             </div>
 
             <div className="p-7 text-black">

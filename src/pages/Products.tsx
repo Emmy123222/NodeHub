@@ -12,9 +12,27 @@ import ProductSearch from "../components/product/ProductSearch";
 import corel from "../assets/Core.jpeg";
 import ryzen from "../assets/Ryzen.jpeg";
 import thread from "../assets/Threadripper.jpeg";
-import { useNavigate } from "react-router-dom";
-import Hard from "./Hard";
+import { useEffect, useState } from "react";
+import { fetcher } from "../services/api";
+
 const Products = () => {
+
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Track loading state
+
+  useEffect(() => {
+    fetcher("/products")
+      .then((res) => {
+        setProducts(res);
+        console.log(res)
+        setIsLoading(false); // Set loading to false after data is fetched
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+        setIsLoading(false); // Set loading to false even if there's an error
+      });
+  }, []);
+
   return (
     <div className="space-y-8">
       <section className="bg-[#17172B] text-white py-20 px-6 flex justify-center gap-12  items-center text-center">
@@ -83,7 +101,13 @@ const Products = () => {
 
       <div className="p-5 space-y-4">
         <ProductSearch />
-        <Product />
+        {isLoading ? ( // Show loading animation if data is being fetched
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+          </div>
+        ) : (
+          <Product products={products} /> // Render products once data is loaded
+        )}
       </div>
     </div>
   );
